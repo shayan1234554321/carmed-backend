@@ -101,6 +101,8 @@ const updateOrder = async (order) => {
       carType: order.carType,
       location: order.location,
       problem: order.problem,
+      date: order.date,
+      time: order.time,
     });
 
   return dbOrder.id;
