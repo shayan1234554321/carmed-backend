@@ -1,14 +1,37 @@
 const Validations = require("../validations");
 const User = require("../services/user");
+const s3 = require("../services/aws");
+const fs = require('fs');
+
+const uploadFileToS3 = async (file) => {
+  try {
+    const imagePath = file.path;
+
+    const blob = fs.readFileSync(imagePath);
+
+    const uploadedImage = await s3.upload({
+      Bucket: process.env.BUCKET_NAME,
+      Key: file.filename,
+      Body: blob,
+    }).promise();
+
+    return uploadedImage;
+  } catch (error) {
+    return null;
+  }
+}
 
 const createUser = async (req, res, next) => {
+
+  const uploadedImage = await uploadFileToS3(req.file);
+
   const user = {
     email : req.body.email,
     name : req.body.name,
     password : req.body.password,
     gender : req.body.gender,
     cnic : req.body.cnic,
-    profile : req.body.profile || ""
+    profile : uploadedImage?.Location || ""
   }
   try {
     const data = await Validations.user.userCreation(

@@ -1,10 +1,8 @@
 const userRouter = require('express').Router();
-const authController = require('../controllers/auth');
 const userController = require('../controllers/user');
-const upload = require("../services/multer")
 
 const router = () => {
-    userRouter.route('/').post(upload.single('image') ,userController.createUser);
+    userRouter.route('/').post(userController.createUser);
     userRouter.route('/addWithoutProfile').post(userController.createUser);
     userRouter.route('/login').put(userController.loginUser);
     userRouter.route('/order').post(userController.createOrder);
