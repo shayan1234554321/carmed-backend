@@ -3,7 +3,6 @@ const userController = require('../controllers/user');
 
 const router = () => {
     userRouter.route('/').post(userController.createUser);
-    userRouter.route('/addWithoutProfile').post(userController.createUser);
     userRouter.route('/login').put(userController.loginUser);
     userRouter.route('/order').post(userController.createOrder);
     userRouter.route('/updateOrder').post(userController.updateOrder);

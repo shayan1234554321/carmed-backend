@@ -1,33 +1,11 @@
 const Validations = require("../validations");
 const Vendor = require("../services/vendor");
-const s3 = require("../services/aws");
-const fs = require('fs');
-
-const uploadFileToS3 = async (file) => {
-  try {
-    const imagePath = file.path;
-
-    const blob = fs.readFileSync(imagePath);
-
-    const uploadedImage = await s3.upload({
-      Bucket: process.env.BUCKET_NAME,
-      Key: file.filename,
-      Body: blob,
-    }).promise();
-
-    return uploadedImage;
-  } catch (error) {
-    return null;
-  }
-}
 
 const createVendor = async (req, res, next) => {
 
-  const uploadedImage = await uploadFileToS3(req.file);
-
   try {
     const request = {
-      profile : uploadedImage?.Location || "",
+      profile : req.body.profile,
       name : req.body.name,
       contact : req.body.contact,
       email : req.body.email,

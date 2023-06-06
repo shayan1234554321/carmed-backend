@@ -23,19 +23,9 @@ const uploadFileToS3 = async (file) => {
 
 const createUser = async (req, res, next) => {
 
-  const uploadedImage = await uploadFileToS3(req.file);
-
-  const user = {
-    email : req.body.email,
-    name : req.body.name,
-    password : req.body.password,
-    gender : req.body.gender,
-    cnic : req.body.cnic,
-    profile : uploadedImage?.Location || ""
-  }
   try {
     const data = await Validations.user.userCreation(
-      user,
+      req.body,
     );
 
     const response = await User.createUser(data);

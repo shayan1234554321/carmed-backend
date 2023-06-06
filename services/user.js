@@ -5,6 +5,15 @@ const { firebaseConstants } = require("../static/constants");
 const { db } = require("./firebase");
 
 const createUser = async (user = {}) => {
+
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      email: user.email,
+    },
+  });
+
+  if (existingUser) return { error: "user already exist" }
+
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(user.password, salt);
   const createdUser = await prisma.user.create({
