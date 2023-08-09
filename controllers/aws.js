@@ -2,6 +2,7 @@ const s3 = require("../services/aws");
 const { getRandomKey } = require("../services/common");
 
 const getSignedUrl = async (req, res, next) => {
+  console.log("here")
   try {
     let imageName = getRandomKey();
     if(req.body.name && req.body.type){
