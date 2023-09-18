@@ -98,8 +98,9 @@ const cancelOrder = async (data) => {
 
 const placeBid = async (data) => {
   const vendor = await prisma.vendor.findFirst({
-    where: { id: data.vendorId },
+    where: { id: data.request.vendorId },
   });
+
   const docRef = db.collection(firebaseConstants.orders).doc(data.id);
   const docData = await docRef.get();
 
